@@ -1,0 +1,217 @@
+"
+" Paul Dombkowski
+" Global Vim options
+" for Windows vim and gvim
+" version 1.1
+"
+
+" General {{{1
+set nocompatible        " disable 'Vi' compatibility
+set textwidth=0         " linewidth to endless
+set nowrap              " do not wrap lines automatically
+set mousehide		" Hide the mouse when typing text
+set ch=2		" Make command line one line high
+set autoread		" Set to auto read when a file is changed from the outside
+set ruler		" Always show current position
+set history=400		" Sets how many lines of history VIM has to remember
+set bs=2                " allow backspacing over everything in insert mode
+set viminfo='20,\"50    " use a .viminfo file - store no more than 50 lines
+set history=400		" Sets how many lines of history VIM has to remember
+"set lines=56 columns=160 " Sets initial window size
+set shell=bash		" Set shell to be bash
+
+" use my colors
+set background=dark
+colorscheme deathstar
+
+if has("gui_running")
+    set guioptions-=T
+    set guioptions+=e
+    set t_Co=256
+    set guitablabel=%M\ %t
+endif
+
+" }}}
+
+"_vimrc options {{{1
+"Fast reloading of the .vimrc
+map <leader>s :source ~/.vimrc<cr>
+
+"Fast editing of _vimrc
+map <leader>e :tabe! ~/.vimrc<cr>
+
+"When _vimrc is edited, reload it
+autocmd! bufwritepost .vimrc source ~/.vimrc
+" vim:ft=vim:ts=4:sw=4:noet:fdm=marker:commentstring=\"\ %s:nowrap
+" }}}}
+
+" File formats {{{1
+"Favorite filetypes
+set ffs=unix,dos,mac
+
+nmap <leader>fd :se ff=dos<cr>
+nmap <leader>fu :se ff=unix<cr>
+" }}}
+
+" Tabs {{{1
+set softtabstop=4       " number of spaces that a <Tab> counts for
+set shiftwidth=4        " number of spaces for each step of (auto)indent
+set expandtab           " use spaces instead of tabs
+set tabstop=4           " number of spaces that a <Tab> counts for
+"set ts=4 sw=4 sts=4 et
+"
+" Keymap for changing tab values {{{{2
+" 
+" normal edit mode
+map <leader>ne :set ts=4 sw=4 sts=4 et<cr>
+
+" kernel edit mode
+map <leader>ke :set ts=8 sw=8 sts=8 noet<cr>
+
+" sass edit mode
+map <leader>se :set ts=2 sw=2 sts=2 et<cr>
+" }}}
+" }}}
+
+" Search {{{1
+set incsearch           " incremental searching
+set ignorecase smartcase " ignore case if the search pattern contains all lowercase
+set hlsearch            " leave search pattern matches highlighted
+"nnoremap <CR> :noh<CR>  " clear highlighted searches with <CR>
+
+" Visual Search {{{2
+function! VisualSearch(direction) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+    if a:direction == 'b'
+        execute "normal ?" . l:pattern . "^M"
+    else
+        execute "normal /" . l:pattern . "^M"
+    endif
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+vnoremap <silent> * :call VisualSearch('f')<CR>
+vnoremap <silent> # :call VisualSearch('b')<CR>
+" }}}
+" }}}
+
+" Keymaps {{{1
+" Fast saving
+nmap <leader>w :w!<cr>
+nmap <leader>f :e ~/buffer<cr>
+" Taglist
+nnoremap <silent> <F8> :Tlist<CR>
+nnoremap <silent> <F7> :TlistUpdate<CR>
+nnoremap <silent> <Leader>ts :Tlist<CR>
+nnoremap <silent> <Leader>tu :TlistUpdate<CR>
+" Invisibles
+nnoremap <silent> <Leader>rw :call Cream_list_toggle("n")<CR>
+" Doxygen
+nnoremap <silent> <Leader>dc :Dox<CR>
+" savevers
+nnoremap <silent> <Leader>vd :VersDiff -t<cr>
+nnoremap <silent> <F5> :VersDiff -<cr>
+nnoremap <silent> <F6> :VersDiff +<cr>
+" use spacebar to insert a single character
+noremap <Space> i <Esc>r
+" }}}
+
+" Misc {{{1
+set tags=./tags,tags,/home/jnalley/tags
+"set foldmethod=syntax
+
+"Turn on Wild menu
+set wildmenu
+
+"Show line number
+"set nu
+
+"Do not redraw, when running macros.. lazyredraw
+set lz
+
+"Change buffer - without saving
+set hid
+
+"Set backspace
+set backspace=eol,start,indent
+
+"Pastetoggle
+set pastetoggle=<F12>
+
+" }}}
+
+" Syntax highlighting {{{1
+syntax on		" Turn on syntax highlighting
+filetype plugin indent on "Enable filetype, plugin, and indent
+
+" set syntax higlighting
+autocmd BufNewFile,BufRead *.php,*.inc setf php
+autocmd BufNewFile,BufRead *.cst setf cst
+autocmd BufNewFile,BufRead *.lua,*.rockspec setf lua
+
+" File type mappings {{{1
+" Python {{{2
+"autocmd BufNewFile,BufRead *.py,*.pyw map <buffer> <leader><Space> :w!<cr>:! C:\Python27\python.exe %<cr>
+autocmd BufNewFile,BufRead *.py,*.pyw map <buffer> <leader><Space> :w!<cr>:! python %<cr>
+" }}}
+" C/C++ {{{2
+autocmd BufNewFile,BufRead *.cpp map <buffer> <leader><space> :w<cr>:make<cr> 
+autocmd BufNewFile,BufRead *.c map <buffer> <leader><space> :w<cr>:make<cr> 
+" }}}
+" Ruby {{{2
+"autocmd BufNewFile,BufRead *.py,*.pyw map <buffer> <leader><Space> :w!<cr>:! C:\Python27\python.exe %<cr>
+autocmd BufNewFile,BufRead *.rb map <buffer> <leader><Space> :w!<cr>:! ruby %<cr>
+autocmd BufNewFile,BufRead *_spec.rb map <buffer> <leader><Space> :w!<cr>:! bundle exec rspec %<cr>
+" }}}
+" HTML5 {{{2
+autocmd BufNewFile SpecRunner.html 0r ~/.vim/templates/skeleton-SpecRunner.html
+autocmd BufNewFile *.html 0r ~/.vim/templates/skeleton.html
+autocmd BufNewFile *-spec.html 0r ~/.vim/templates/skeleton-spec.html
+" }}}
+" }}}
+
+
+
+"Have the mouse enabled all the time:
+" set mouse=a
+
+" Source plugins {{{1
+function! SourceFile(path, file)
+   "Path should be /blah/blah/blah
+   let path_file = a:path . '/' . a:file
+   exe "source " . path_file
+endfunction
+
+function! SourceDir(path)
+   "Path should be /blah/blah/blah
+   let files = system("ls " . a:path)
+   let pattern = '[A-Za-z0-9-_]\+.vim'
+   while match(files, pattern) != -1
+      let file = matchstr(files, pattern)
+      let files = substitute(files, pattern . '\n', '', '')
+      call SourceFile(a:path, file)
+   endwhile
+endfunction
+
+"Source files frenzy
+"call SourceDir("~/.vim/plugin")
+" }}}
+" Syntax {{{1
+let g:load_doxygen_syntax=1
+let mysyntaxfile='~/.vim/syntax/doxygen_load.vim'
+syntax on
+" }}}
+" Plugins {{{1
+let g:Tex_Menus=0
+let g:cppcomplete_placeholders=1 
+"let Tlist_Ctags_Cmd='~/local/bin/ctags -R --fields=afmikKlnsStz'
+let Tlist_Ctags_Cmd='~/local/bin/ctags -R --fields=afiKmsSzn'
+let Tlist_Use_Right_Window = 1
+au BufNewFile,BufRead  svn-commit.* setf svn
+au FileType svn map <Leader>sd :SVNCommitDiff<CR>
+" }}}
+
