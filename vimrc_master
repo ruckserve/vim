@@ -1,39 +1,56 @@
 "
 " Paul Dombkowski
 " Global Vim options
-" for Windows vim and gvim
-" version 1.1
+" for vim and gvim
+" version 2.0
 "
 
-" General {{{1
+" General
 set nocompatible        " disable 'Vi' compatibility
+let mapleader = "\\"    " set \ as the leader key, so that localleader can be useful
 set textwidth=0         " linewidth to endless
 set nowrap              " do not wrap lines automatically
-set mousehide		" Hide the mouse when typing text
-set ch=2		" Make command line one line high
-set autoread		" Set to auto read when a file is changed from the outside
-set ruler		" Always show current position
-set history=400		" Sets how many lines of history VIM has to remember
+set mousehide           " Hide the mouse when typing text
+set cmdheight=1         " Make command line at bottom one lines high
+set autoread            " Set to auto read when a file is changed from the outside
+set ruler               " Always show current position
+set history=400         " Sets how many lines of history VIM has to remember
 set bs=2                " allow backspacing over everything in insert mode
 set viminfo='20,\"50    " use a .viminfo file - store no more than 50 lines
-set history=400		" Sets how many lines of history VIM has to remember
-"set lines=56 columns=160 " Sets initial window size
-set shell=bash		" Set shell to be bash
+set history=400         " Sets how many lines of history VIM has to remember
+set lines=40 columns=80 " Sets initial window size
+set shell=bash          " Set shell to be bash
+
+" line numbering options
+set number              " Show line numbers
+if &relativenumber == 'norelativenumber'
+    nnoremap <leader>rn :setlocal relativenumber
+else
+    nnoremap <leader>rn :setlocal norelativenumber
+endif
 
 " use my colors
 set background=dark
 colorscheme deathstar
 
 if has("gui_running")
+    if has("gui_gtk2")
+        winsize 90 41 " Sets initial window size
+        winpos 767 0  " Sets initial window position
+        set guifont=Droid\ Sans\ Mono\ 11
+    elseif has("gui_macvim")
+        "
+    elseif has("gui_win32")
+        set guifont=Lucida_Console:h11:cDEFAULT
+    endif
     set guioptions-=T
     set guioptions+=e
     set t_Co=256
     set guitablabel=%M\ %t
+    colorscheme solarized
 endif
 
-" }}}
-
-"_vimrc options {{{1
+" vimrc options
 "Fast reloading of the .vimrc
 map <leader>s :source ~/.vimrc<cr>
 
@@ -54,11 +71,11 @@ nmap <leader>fu :se ff=unix<cr>
 " }}}
 
 " Tabs {{{1
-set softtabstop=4       " number of spaces that a <Tab> counts for
-set shiftwidth=4        " number of spaces for each step of (auto)indent
-set expandtab           " use spaces instead of tabs
-set tabstop=4           " number of spaces that a <Tab> counts for
 "set ts=4 sw=4 sts=4 et
+set tabstop=4           " number of spaces that a <Tab> counts for
+set shiftwidth=4        " number of spaces for each step of (auto)indent
+set softtabstop=4       " number of spaces that a <Tab> counts for
+set expandtab           " use spaces instead of tabs
 "
 " Keymap for changing tab values {{{{2
 " 
@@ -74,9 +91,9 @@ map <leader>se :set ts=2 sw=2 sts=2 et<cr>
 " }}}
 
 " Search {{{1
-set incsearch           " incremental searching
+set incsearch            " incremental searching
 set ignorecase smartcase " ignore case if the search pattern contains all lowercase
-set hlsearch            " leave search pattern matches highlighted
+set hlsearch             " leave search pattern matches highlighted
 "nnoremap <CR> :noh<CR>  " clear highlighted searches with <CR>
 
 " Visual Search {{{2
@@ -94,8 +111,8 @@ function! VisualSearch(direction) range
     let @" = l:saved_reg
 endfunction
 
-vnoremap <silent> * :call VisualSearch('f')<CR>
-vnoremap <silent> # :call VisualSearch('b')<CR>
+vnoremap <silent> * :call VisualSearch('b')<CR>
+vnoremap <silent> # :call VisualSearch('f')<CR>
 " }}}
 " }}}
 
@@ -117,7 +134,22 @@ nnoremap <silent> <Leader>vd :VersDiff -t<cr>
 nnoremap <silent> <F5> :VersDiff -<cr>
 nnoremap <silent> <F6> :VersDiff +<cr>
 " use spacebar to insert a single character
-noremap <Space> i <Esc>r
+nnoremap <Space> i <Esc>r
+" use K as the opposite of J to split a line
+nnoremap K i <Esc>ciw<CR><Esc>^
+" use w with two ! to sudo save the current buffer
+cmap w!! w !sudo tee % >/dev/null
+" use the arrow keys and pagedown/pageup to move between buffers
+nnoremap <silent><PageDown> :tabnext<CR>
+nnoremap <silent><PageUp> :tabprevious<CR>
+nnoremap <silent><right> :wincmd l<CR>
+nnoremap <silent><left> :wincmd h<CR>
+nnoremap <silent><up> :wincmd k<CR>
+nnoremap <silent><down> :wincmd j<CR>
+nnoremap <silent><C-right> :vertical resize +1<CR>
+nnoremap <silent><C-left> :vertical resize -1<CR>
+nnoremap <silent><C-up> :resize +1<CR>
+nnoremap <silent><C-down> :resize -1<CR>
 " }}}
 
 " Misc {{{1
@@ -127,11 +159,8 @@ set tags=./tags,tags,/home/jnalley/tags
 "Turn on Wild menu
 set wildmenu
 
-"Show line number
-"set nu
-
 "Do not redraw, when running macros.. lazyredraw
-set lz
+set lazyredraw
 
 "Change buffer - without saving
 set hid
@@ -145,8 +174,8 @@ set pastetoggle=<F12>
 " }}}
 
 " Syntax highlighting {{{1
-syntax on		" Turn on syntax highlighting
-filetype plugin indent on "Enable filetype, plugin, and indent
+syntax on                 " Turn on syntax highlighting
+filetype plugin indent on " Enable filetype, plugin, and indent
 
 " set syntax higlighting
 autocmd BufNewFile,BufRead *.php,*.inc setf php
@@ -162,15 +191,10 @@ autocmd BufNewFile,BufRead *.py,*.pyw map <buffer> <leader><Space> :w!<cr>:! pyt
 autocmd BufNewFile,BufRead *.cpp map <buffer> <leader><space> :w<cr>:make<cr> 
 autocmd BufNewFile,BufRead *.c map <buffer> <leader><space> :w<cr>:make<cr> 
 " }}}
-" Ruby {{{2
-"autocmd BufNewFile,BufRead *.py,*.pyw map <buffer> <leader><Space> :w!<cr>:! C:\Python27\python.exe %<cr>
-autocmd BufNewFile,BufRead *.rb map <buffer> <leader><Space> :w!<cr>:! ruby %<cr>
-autocmd BufNewFile,BufRead *_spec.rb map <buffer> <leader><Space> :w!<cr>:! bundle exec rspec %<cr>
-" }}}
 " HTML5 {{{2
-autocmd BufNewFile SpecRunner.html 0r ~/.vim/templates/skeleton-SpecRunner.html
 autocmd BufNewFile *.html 0r ~/.vim/templates/skeleton.html
 autocmd BufNewFile *-spec.html 0r ~/.vim/templates/skeleton-spec.html
+autocmd BufNewFile SpecRunner.html r ~/.vim/templates/skeleton-SpecRunner.html
 " }}}
 " }}}
 
