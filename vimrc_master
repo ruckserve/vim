@@ -5,31 +5,28 @@
 " version 2.0
 "
 
-" General
+"----------- General -----------
 set nocompatible        " disable 'Vi' compatibility
 let mapleader = "\\"    " set \ as the leader key, so that localleader can be useful
 set textwidth=0         " linewidth to endless
 set nowrap              " do not wrap lines automatically
 set mousehide           " Hide the mouse when typing text
+" set mouse=a
 set cmdheight=1         " Make command line at bottom one lines high
 set autoread            " Set to auto read when a file is changed from the outside
 set ruler               " Always show current position
 set history=400         " Sets how many lines of history VIM has to remember
-set bs=2                " allow backspacing over everything in insert mode
+set backspace=2         " allow backspacing over everything in insert mode
 set viminfo='20,\"50    " use a .viminfo file - store no more than 50 lines
 set history=400         " Sets how many lines of history VIM has to remember
 set lines=40 columns=80 " Sets initial window size
+set wildmenu            " Turn on wild menu for autocompleting vim commands
+set lazyredraw          " Do not redraw when running macros
+set hidden              " Hide buffer when closing file instead of discarding it
+set pastetoggle=<F12>   " Pastetoggle - Key for disabling autoindent when pasting from another program
 set shell=bash          " Set shell to be bash
 
-" line numbering options
-set number              " Show line numbers
-if &relativenumber == 'norelativenumber'
-    nnoremap <leader>rn :setlocal relativenumber
-else
-    nnoremap <leader>rn :setlocal norelativenumber
-endif
-
-" use my colors
+"----------- Colors and Font for Terminal and GUI -----------
 set background=dark
 colorscheme deathstar
 
@@ -50,53 +47,49 @@ if has("gui_running")
     colorscheme solarized
 endif
 
-" vimrc options
-"Fast reloading of the .vimrc
-map <leader>s :source ~/.vimrc<cr>
+"----------- Vimrc Options -----------
+" fast reloading of the .vimrc
+map <leader>s :source ~/.vimrc<CR>
 
-"Fast editing of _vimrc
-map <leader>e :tabe! ~/.vimrc<cr>
+" fast editing of .vimrc
+map <leader>e :tabe! ~/.vimrc<CR>
 
-"When _vimrc is edited, reload it
+" when _vimrc is edited, reload it
 autocmd! bufwritepost .vimrc source ~/.vimrc
 " vim:ft=vim:ts=4:sw=4:noet:fdm=marker:commentstring=\"\ %s:nowrap
-" }}}}
 
-" File formats {{{1
-"Favorite filetypes
+"----------- File formats -----------
+" favorite filetypes
 set ffs=unix,dos,mac
 
-nmap <leader>fd :se ff=dos<cr>
-nmap <leader>fu :se ff=unix<cr>
-" }}}
+nmap <leader>fd :se ff=dos<CR>
+nmap <leader>fu :se ff=unix<CR>
 
-" Tabs {{{1
+"----------- Tabs -----------
 "set ts=4 sw=4 sts=4 et
 set tabstop=4           " number of spaces that a <Tab> counts for
 set shiftwidth=4        " number of spaces for each step of (auto)indent
 set softtabstop=4       " number of spaces that a <Tab> counts for
 set expandtab           " use spaces instead of tabs
 "
-" Keymap for changing tab values {{{{2
+" Keymap for changing tab values
 " 
 " normal edit mode
-map <leader>ne :set ts=4 sw=4 sts=4 et<cr>
+map <leader>ne :set ts=4 sw=4 sts=4 et<CR>
 
 " kernel edit mode
-map <leader>ke :set ts=8 sw=8 sts=8 noet<cr>
+map <leader>ke :set ts=8 sw=8 sts=8 noet<CR>
 
 " sass edit mode
-map <leader>se :set ts=2 sw=2 sts=2 et<cr>
-" }}}
-" }}}
+map <leader>se :set ts=2 sw=2 sts=2 et<CR>
 
-" Search {{{1
+"----------- Search -----------
 set incsearch            " incremental searching
 set ignorecase smartcase " ignore case if the search pattern contains all lowercase
 set hlsearch             " leave search pattern matches highlighted
 "nnoremap <CR> :noh<CR>  " clear highlighted searches with <CR>
 
-" Visual Search {{{2
+" visual search
 function! VisualSearch(direction) range
     let l:saved_reg = @"
     execute "normal! vgvy"
@@ -113,26 +106,11 @@ endfunction
 
 vnoremap <silent> * :call VisualSearch('b')<CR>
 vnoremap <silent> # :call VisualSearch('f')<CR>
-" }}}
-" }}}
 
-" Keymaps {{{1
-" Fast saving
-nmap <leader>w :w!<cr>
-nmap <leader>f :e ~/buffer<cr>
-" Taglist
-nnoremap <silent> <F8> :Tlist<CR>
-nnoremap <silent> <F7> :TlistUpdate<CR>
-nnoremap <silent> <Leader>ts :Tlist<CR>
-nnoremap <silent> <Leader>tu :TlistUpdate<CR>
-" Invisibles
-nnoremap <silent> <Leader>rw :call Cream_list_toggle("n")<CR>
-" Doxygen
-nnoremap <silent> <Leader>dc :Dox<CR>
-" savevers
-nnoremap <silent> <Leader>vd :VersDiff -t<cr>
-nnoremap <silent> <F5> :VersDiff -<cr>
-nnoremap <silent> <F6> :VersDiff +<cr>
+"----------- Keymaps -----------
+" fast saving
+nmap <leader>w :w!<CR>
+nmap <leader>f :e ~/buffer<CR>
 " use spacebar to insert a single character
 nnoremap <Space> i <Esc>r
 " use K as the opposite of J to split a line
@@ -142,100 +120,47 @@ cmap w!! w !sudo tee % >/dev/null
 " use the arrow keys and pagedown/pageup to move between buffers
 nnoremap <silent><PageDown> :tabnext<CR>
 nnoremap <silent><PageUp> :tabprevious<CR>
-nnoremap <silent><right> :wincmd l<CR>
-nnoremap <silent><left> :wincmd h<CR>
-nnoremap <silent><up> :wincmd k<CR>
-nnoremap <silent><down> :wincmd j<CR>
-nnoremap <silent><C-right> :vertical resize +1<CR>
-nnoremap <silent><C-left> :vertical resize -1<CR>
-nnoremap <silent><C-up> :resize +1<CR>
-nnoremap <silent><C-down> :resize -1<CR>
-" }}}
+nnoremap <silent><Right> :wincmd l<CR>
+nnoremap <silent><Left> :wincmd h<CR>
+nnoremap <silent><Up> :wincmd k<CR>
+nnoremap <silent><Down> :wincmd j<CR>
+nnoremap <silent><Ctrl-Right> :vertical resize +1<CR>
+nnoremap <silent><Ctrl-Left> :vertical resize -1<CR>
+nnoremap <silent><Ctrl-Up> :resize +1<CR>
+nnoremap <silent><Ctrl-Down> :resize -1<CR>
 
-" Misc {{{1
-set tags=./tags,tags,/home/jnalley/tags
-"set foldmethod=syntax
-
-"Turn on Wild menu
-set wildmenu
-
-"Do not redraw, when running macros.. lazyredraw
-set lazyredraw
-
-"Change buffer - without saving
-set hid
-
-"Set backspace
-set backspace=eol,start,indent
-
-"Pastetoggle
-set pastetoggle=<F12>
-
-" }}}
-
-" Syntax highlighting {{{1
+"----------- Syntax Highlighting -----------
 syntax on                 " Turn on syntax highlighting
 filetype plugin indent on " Enable filetype, plugin, and indent
 
-" set syntax higlighting
+" set some syntax highlighting filetypes
 autocmd BufNewFile,BufRead *.php,*.inc setf php
 autocmd BufNewFile,BufRead *.cst setf cst
 autocmd BufNewFile,BufRead *.lua,*.rockspec setf lua
 
-" File type mappings {{{1
-" Python {{{2
-"autocmd BufNewFile,BufRead *.py,*.pyw map <buffer> <leader><Space> :w!<cr>:! C:\Python27\python.exe %<cr>
-autocmd BufNewFile,BufRead *.py,*.pyw map <buffer> <leader><Space> :w!<cr>:! python %<cr>
-" }}}
-" C/C++ {{{2
-autocmd BufNewFile,BufRead *.cpp map <buffer> <leader><space> :w<cr>:make<cr> 
-autocmd BufNewFile,BufRead *.c map <buffer> <leader><space> :w<cr>:make<cr> 
-" }}}
-" HTML5 {{{2
+"----------- File type mappings -----------
+" C/C++
+autocmd BufNewFile,BufRead *.cpp map <buffer> <leader><Space> :w<CR>:make<CR> 
+autocmd BufNewFile,BufRead *.c map <buffer> <leader><Space> :w<CR>:make<CR> 
+
+" HTML5
 autocmd BufNewFile *.html 0r ~/.vim/templates/skeleton.html
 autocmd BufNewFile *-spec.html 0r ~/.vim/templates/skeleton-spec.html
 autocmd BufNewFile SpecRunner.html r ~/.vim/templates/skeleton-SpecRunner.html
-" }}}
-" }}}
 
+"----------- Line Numbering -----------
+set number              " Show line numbers
 
-
-"Have the mouse enabled all the time:
-" set mouse=a
-
-" Source plugins {{{1
-function! SourceFile(path, file)
-   "Path should be /blah/blah/blah
-   let path_file = a:path . '/' . a:file
-   exe "source " . path_file
+let g:rel_number = 0
+function! RelativeNumberToggle()
+    if g:rel_number
+        setlocal number
+        let g:rel_number = 0
+    else
+        setlocal relativenumber
+        let g:rel_number = 1
+    endif
 endfunction
 
-function! SourceDir(path)
-   "Path should be /blah/blah/blah
-   let files = system("ls " . a:path)
-   let pattern = '[A-Za-z0-9-_]\+.vim'
-   while match(files, pattern) != -1
-      let file = matchstr(files, pattern)
-      let files = substitute(files, pattern . '\n', '', '')
-      call SourceFile(a:path, file)
-   endwhile
-endfunction
-
-"Source files frenzy
-"call SourceDir("~/.vim/plugin")
-" }}}
-" Syntax {{{1
-let g:load_doxygen_syntax=1
-let mysyntaxfile='~/.vim/syntax/doxygen_load.vim'
-syntax on
-" }}}
-" Plugins {{{1
-let g:Tex_Menus=0
-let g:cppcomplete_placeholders=1 
-"let Tlist_Ctags_Cmd='~/local/bin/ctags -R --fields=afmikKlnsStz'
-let Tlist_Ctags_Cmd='~/local/bin/ctags -R --fields=afiKmsSzn'
-let Tlist_Use_Right_Window = 1
-au BufNewFile,BufRead  svn-commit.* setf svn
-au FileType svn map <Leader>sd :SVNCommitDiff<CR>
-" }}}
+nnoremap <silent> <leader>r :call RelativeNumberToggle()<CR>
 
