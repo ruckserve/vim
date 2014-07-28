@@ -1,0 +1,5 @@
+git@github.com:Shougo/unite.vim.git
+git@github.com:tpope/vim-haml.git
+https://github.com/nathanaelkane/vim-indent-guides.git
+https://github.com/pangloss/vim-javascript.git
+git@github.com:pbd9970/vim.git
