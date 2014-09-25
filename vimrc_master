@@ -31,7 +31,6 @@ execute pathogen#infect()
 
 "----------- Colors and Font for Terminal and GUI -----------
 set background=dark
-colorscheme deathstar
 
 if has("gui_running")
     if has("gui_gtk2")
@@ -48,6 +47,8 @@ if has("gui_running")
     set t_Co=256
     set guitablabel=%M\ %t
     colorscheme solarized
+else
+    colorscheme deathstar
 endif
 
 "----------- Vimrc Options -----------
