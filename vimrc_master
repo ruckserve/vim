@@ -25,6 +25,8 @@ set lazyredraw          " Do not redraw when running macros
 set hidden              " Hide buffer when closing file instead of discarding it
 set pastetoggle=<F12>   " Pastetoggle - Key for disabling autoindent when pasting from another program
 set shell=bash          " Set shell to be bash
+set autoindent          " Set autoindent
+set encoding=utf-8      " Set encoding to UTF-8
 
 "----------- Enable Plugins From Pathogen -----------
 execute pathogen#infect()
@@ -48,7 +50,7 @@ if has("gui_running")
     set guitablabel=%M\ %t
     colorscheme solarized
 else
-    colorscheme deathstar
+    "colorscheme deathstar
 endif
 
 "----------- Vimrc Options -----------
@@ -59,7 +61,7 @@ map <leader>s :source ~/.vimrc<CR>
 map <leader>e :tabe! ~/.vimrc<CR>
 
 " when _vimrc is edited, reload it
-autocmd! bufwritepost .vimrc source ~/.vimrc
+autocmd! BufWritePost .vimrc source ~/.vimrc
 " vim:ft=vim:ts=4:sw=4:noet:fdm=marker:commentstring=\"\ %s:nowrap
 
 "----------- File formats -----------
@@ -77,21 +79,20 @@ set softtabstop=4       " number of spaces that a <Tab> counts for
 set expandtab           " use spaces instead of tabs
 "
 " Keymap for changing tab values
-" 
-" normal edit mode
-map <leader>ne :set ts=4 sw=4 sts=4 et<CR>
-
 " kernel edit mode
 map <leader>ke :set ts=8 sw=8 sts=8 noet<CR>
 
 " sass edit mode
 map <leader>se :set ts=2 sw=2 sts=2 et<CR>
 
+" normal edit mode
+map <leader>ne :set ts=4 sw=4 sts=4 et<CR>
+
 "----------- Search -----------
 set incsearch            " incremental searching
 set ignorecase smartcase " ignore case if the search pattern contains all lowercase
 set hlsearch             " leave search pattern matches highlighted
-"nnoremap <CR> :noh<CR>  " clear highlighted searches with <CR>
+nnoremap <CR> :noh<CR>  " clear highlighted searches with <CR>
 
 " visual search
 function! VisualSearch(direction) range
@@ -110,6 +111,12 @@ endfunction
 
 vnoremap <silent> * :call VisualSearch('b')<CR>
 vnoremap <silent> # :call VisualSearch('f')<CR>
+
+"------------ Clean ------------
+
+" show trailing whitespace as a '·'
+set listchars=trail:·
+set list
 
 "----------- Keymaps -----------
 " fast saving
@@ -144,8 +151,8 @@ autocmd BufNewFile,BufRead *.lua,*.rockspec setf lua
 
 "----------- File type mappings -----------
 " C/C++
-autocmd BufNewFile,BufRead *.cpp map <buffer> <leader><Space> :w<CR>:make<CR> 
-autocmd BufNewFile,BufRead *.c map <buffer> <leader><Space> :w<CR>:make<CR> 
+autocmd BufNewFile,BufRead *.cpp map <buffer> <leader><Space> :w<CR>:make<CR>
+autocmd BufNewFile,BufRead *.c map <buffer> <leader><Space> :w<CR>:make<CR>
 
 "----------- Line Numbering -----------
 set number              " Show line numbers
@@ -153,7 +160,7 @@ set number              " Show line numbers
 let g:rel_number = 0
 function! RelativeNumberToggle()
     if g:rel_number
-        setlocal number
+        setlocal norelativenumber
         let g:rel_number = 0
     else
         setlocal relativenumber
@@ -163,3 +170,13 @@ endfunction
 
 nnoremap <silent> <leader>r :call RelativeNumberToggle()<CR>
 
+"------------ Diff Tool ----------------
+
+function! s:DiffWithSaved()
+    let filetype=&ft
+    diffthis
+    vnew | r # | normal! 1Gdd
+    diffthis
+    exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+endfunction
+com! DiffSaved call s:DiffWithSaved()
