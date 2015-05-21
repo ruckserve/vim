@@ -38,7 +38,7 @@ if has("gui_running")
         winpos 767 35  " Sets initial window position
         set guifont=Droid\ Sans\ Mono\ 11
     elseif has("gui_macvim")
-        "
+        set guifont=Menlo:h11
     elseif has("gui_win32")
         set guifont=Lucida_Console:h11:cDEFAULT
     endif

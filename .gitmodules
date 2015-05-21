@@ -19,3 +19,12 @@
 [submodule "bundle/php.vim"]
 	path = bundle/php.vim
 	url = git@github.com:StanAngeloff/php.vim.git
+[submodule "bundle/vim-phpqa"]
+	path = bundle/vim-phpqa
+	url = git@github.com:joonty/vim-phpqa.git
+[submodule "bundle/vim-vinegar"]
+	path = bundle/vim-vinegar
+	url = git@github.com:tpope/vim-vinegar.git
+[submodule "bundle/vim-abolish"]
+	path = bundle/vim-abolish
+	url = git@github.com:tpope/vim-abolish.git
