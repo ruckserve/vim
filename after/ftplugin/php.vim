@@ -19,7 +19,7 @@ else
     if @% =~# 'Test\.php'
         nnoremap <buffer> <leader><Space> :w!<cr>:! vendor/bin/phpunit %<cr>
     else
-        nnoremap <buffer> <leader><Space> :w!<CR>:! psysh %<CR>
+        nnoremap <buffer> <leader><Space> :w!<CR>:! php %<CR>
     endif
 endif
 

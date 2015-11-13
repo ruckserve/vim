@@ -127,6 +127,12 @@ nnoremap <Space> i <Esc>r
 " use K as the opposite of J to split a line
 nnoremap K i <Esc>ciw<CR><Esc>^
 " use w with two ! to sudo save the current buffer
+" wrap selection in __ :
+vnoremap " s""<Esc>P
+vnoremap ' s''<Esc>P
+vnoremap ( s()<Esc>P
+vnoremap [ s[]<Esc>P
+vnoremap { s{}<Esc>P
 cmap w!! w !sudo tee % >/dev/null
 " use the arrow keys and pagedown/pageup to move between buffers
 nnoremap <silent><PageDown> :tabnext<CR>
