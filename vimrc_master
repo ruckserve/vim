@@ -50,7 +50,7 @@ if has("gui_running")
     set guitablabel=%M\ %t
     colorscheme solarized
 else
-    "colorscheme deathstar
+    " colorscheme deathstar
 endif
 
 "----------- Vimrc Options -----------
@@ -186,3 +186,6 @@ function! s:DiffWithSaved()
     exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 com! DiffSaved call s:DiffWithSaved()
+
+"-------------- Unite ------------------
+nnoremap <Leader>f :Unite -start-insert file_rec
