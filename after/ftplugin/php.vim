@@ -27,7 +27,7 @@ nnoremap ; A;<Esc>
 
 "---------- phpqa.vim ------------
 " Set the messdetector rulesets
-let g:phpqa_messdetector_ruleset="codesize,unusedcode,naming,design,cleancode,controversial"
+let g:phpqa_messdetector_ruleset="unusedcode,design,cleancode,controversial"
 
 " Set the codesniffer args
 let g:phpqa_codesniffer_args = "--standard=PSR2"

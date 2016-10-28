@@ -132,6 +132,7 @@ vnoremap " s""<Esc>P
 vnoremap ' s''<Esc>P
 vnoremap ( s()<Esc>P
 vnoremap [ s[]<Esc>P
+vnoremap ` s``<Esc>P
 vnoremap { s{}<Esc>P
 cmap w!! w !sudo tee % >/dev/null
 " use the arrow keys and pagedown/pageup to move between buffers
