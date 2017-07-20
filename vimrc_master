@@ -71,6 +71,11 @@ set ffs=unix,dos,mac
 nmap <leader>fd :se ff=dos<CR>
 nmap <leader>fu :se ff=unix<CR>
 
+"----------- Tags -----------
+" configure tag file
+set tags=~/.tagsfile
+nnoremap <leader>g :!ROOT_DIR=`git rev-parse --show-toplevel 2>/dev/null` ctags -R --exclude='.git/*' --exclude="*.js" --exclude='*.pyc' --exclude='__init__.py' -a -o ~/.tagsfile ${ROOT_DIR:-~/code}<CR>
+
 "----------- Tabs -----------
 "set ts=4 sw=4 sts=4 et
 set tabstop=4           " number of spaces that a <Tab> counts for
