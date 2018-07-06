@@ -73,7 +73,11 @@ nmap <leader>fu :se ff=unix<CR>
 
 "----------- Tags -----------
 " configure tag file
-set tags=~/.tagsfile
+if !empty(glob("./tags"))
+    set tags=tags
+else
+    set tags=~/.tagsfile
+endif
 nnoremap <leader>g :!ROOT_DIR=`git rev-parse --show-toplevel 2>/dev/null` ctags -R --exclude='.git/*' --exclude="*.js" --exclude='*.pyc' --exclude='__init__.py' -a -o ~/.tagsfile ${ROOT_DIR:-~/code}<CR>
 
 "----------- Tabs -----------

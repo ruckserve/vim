@@ -49,3 +49,6 @@
 [submodule "bundle/vim-log-syntax"]
 	path = bundle/vim-log-syntax
 	url = git@github.com:dzeban/vim-log-syntax.git
+[submodule "bundle/vim-notes"]
+	path = bundle/vim-notes
+	url = git@github.com:xolox/vim-notes.git
