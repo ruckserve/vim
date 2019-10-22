@@ -200,3 +200,6 @@ com! DiffSaved call s:DiffWithSaved()
 
 "-------------- Unite ------------------
 nnoremap <Leader>f :Unite -start-insert file_rec
+
+"-------------- Folding ------------------
+set foldlevel=100
