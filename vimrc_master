@@ -43,6 +43,7 @@ if has("gui_running")
         set guifont=Menlo:h11
     elseif has("gui_win32")
         set guifont=Lucida_Console:h11:cDEFAULT
+        // Set some other var for notes here //
     endif
     set guioptions-=T
     set guioptions+=e
@@ -78,7 +79,7 @@ if !empty(glob("./tags"))
 else
     set tags=~/.tagsfile
 endif
-nnoremap <leader>g :!ROOT_DIR=`git rev-parse --show-toplevel 2>/dev/null` ctags -R --exclude='.git/*' --exclude="*.js" --exclude='*.pyc' --exclude='__init__.py' -a -o ~/.tagsfile ${ROOT_DIR:-~/code}<CR>
+nnoremap <leader>g :!ROOT_DIR=`git rev-parse --show-toplevel 2>/dev/null` ctags -R --exclude='.git/*' --exclude="*.js" --exclude='*.pyc' -a -o ~/.tagsfile ${ROOT_DIR:-~/code}<CR>
 
 "----------- Tabs -----------
 "set ts=4 sw=4 sts=4 et
