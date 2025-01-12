@@ -55,3 +55,6 @@
 [submodule "bundle/vim-misc"]
 	path = bundle/vim-misc
 	url = git@github.com:xolox/vim-misc.git
+[submodule "bundle/vim-yaml-folds"]
+	path = bundle/vim-yaml-folds
+    url = git@github.com:pedrohdz/vim-yaml-folds.git
