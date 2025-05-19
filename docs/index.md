@@ -6,6 +6,9 @@ title: Sample Jekyll Page
 # Welcome to My Jekyll Page
 
 This is a sample page created to demonstrate three sections in Jekyll. Enjoy reading!
+```bash
+this tests out the copy button
+```
 
 ---
 
